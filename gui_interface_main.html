@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<script type="text/javascript" src="./lib/roslib.js"></script>
+<script type="text/javascript" src="./lib/eventemitter2.js"></script>
+
+<script type="text/javascript" type="text/javascript">
+
+  var ros = new ROSLIB.Ros({
+    url : 'ws://localhost:9090'
+  });
+
+  ros.on('connection', function() {
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error) {
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function() {
+    console.log('Connection to websocket server closed.');
+  });
+
+  var mainListener = new ROSLIB.Topic({
+    ros : ros,
+    name : '/whill/odom',
+    messageType : 'nav_msgs/Odometry'
+  });
+
+  mainListener.subscribe(function(msg) {
+    console.log('Connected to whill odom');
+    console.log('NAME: ' + msg.name + 'DATA: ' + msg.data);
+    mainListener.unsubscribe();
+  })
+
+</script>
+
+<body>
+  <h1>Connecting to</h1>
+</body>
+</html>
